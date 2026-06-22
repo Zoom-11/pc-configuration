@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Просмотр сборки</title>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">🖥️ PC Configurator</a>
+            <div class="user-info" id="userInfo">
+                <button id="loginBtn">🔑 Войти</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container build-container">
+        <div class="build-header">
+            <h1 id="buildTitle">Загрузка...</h1>
+            <div id="buildMeta" class="build-meta"></div>
+        </div>
+
+        <div class="rating-block" id="ratingBlock"></div>
+
+        <div class="components-table">
+            <h2>Комплектующие</h2>
+            <div id="componentsTable"></div>
+        </div>
+
+        <div class="back-button">
+            <button id="backBtn">← Назад</button>
+            <button id="cloneBtn" style="display:none;">📋 Клонировать сборку</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра компонента -->
+    <div id="componentModal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalBtn" class="danger" style="float:right;">✕</button>
+            <h2 id="modalComponentName"></h2>
+            <p id="modalComponentCategory"></p>
+            <img id="modalComponentImage" src="" alt="Компонент" style="max-width:100%; max-height:200px; display:none;" />
+            <div id="modalComponentGallery" style="display:flex; gap:5px; flex-wrap:wrap; margin:10px 0;"></div>
+            <div id="modalComponentSpecs"></div>
+            <p id="modalComponentPrice"></p>
+            <div>
+                <button id="modalPrevBtn">◀</button>
+                <button id="modalNextBtn">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/build.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - PC Configurator</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">⚡ PC Configurator</a>
+            <div class="user-info" id="userInfo">
+                <a href="/profile.html" style="color: #2563eb; text-decoration: none; margin-right: 1rem;">👤 Личный кабинет</a>
+                <span>👤 Пользователь</span>
+                <button id="logoutBtn">Выйти</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Личный кабинет</h1>
+        
+        <div class="profile-tabs">
+            <button class="tab-btn active" data-tab="profile">👤 Профиль</button>
+            <button class="tab-btn" data-tab="assemblies">📦 Мои сборки</button>
+            <button class="tab-btn" data-tab="orders">📋 Мои заказы</button>
+            <button class="tab-btn" data-tab="settings">⚙️ Настройки</button>
+        </div>
+
+        <!-- Вкладка: Профиль -->
+        <div id="profileTab" class="tab-content active">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>📦 Сборок</h3>
+                    <p id="statsAssembliesCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💰 Общая стоимость</h3>
+                    <p id="statsTotalPrice">0 ₽</p>
+                </div>
+                <div class="stat-card">
+                    <h3>⭐ Средний рейтинг</h3>
+                    <p id="statsAvgRating">—</p>
+                </div>
+                <div class="stat-card">
+                    <h3>📅 С нами с</h3>
+                    <p id="statsMemberSince">—</p>
+                </div>
+                <div class="stat-card">
+                    <h3>📋 Заказов</h3>
+                    <p id="statsOrdersCount">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>💰 Потрачено</h3>
+                    <p id="statsTotalSpent">0 ₽</p>
+                </div>
+            </div>
+            
+            <div class="profile-info">
+                <p><strong>👤 Имя пользователя:</strong> <span id="profileUsername"></span></p>
+                <p><strong>📧 Email:</strong> <span id="profileEmail"></span></p>
+                <p><strong>📞 Телефон:</strong> <span id="profilePhone"></span></p>
+                <p><strong>📅 Дата регистрации:</strong> <span id="profileCreated"></span></p>
+            </div>
+            
+            <div class="edit-profile">
+                <h3>✏️ Редактировать профиль</h3>
+                <input type="text" id="editUsername" placeholder="Новое имя пользователя">
+                <input type="email" id="editEmail" placeholder="Новый email">
+                <input type="tel" id="editPhone" placeholder="Номер телефона">
+                <button id="updateProfileBtn">💾 Обновить профиль</button>
+            </div>
+        </div>
+
+        <!-- Вкладка: Мои сборки -->
+        <div id="assembliesTab" class="tab-content">
+            <div id="assembliesList" class="component-list">
+                <p>Загрузка...</p>
+            </div>
+        </div>
+
+        <!-- Вкладка: Мои заказы -->
+        <div id="ordersTab" class="tab-content">
+            <div id="ordersList">
+                <p>Загрузка...</p>
+            </div>
+        </div>
+
+        <!-- Вкладка: Настройки -->
+        <div id="settingsTab" class="tab-content">
+            <h3>🔐 Сменить пароль</h3>
+            <input type="password" id="oldPassword" placeholder="Старый пароль">
+            <input type="password" id="newPassword" placeholder="Новый пароль">
+            <input type="password" id="confirmPassword" placeholder="Подтвердите пароль">
+            <button id="changePasswordBtn">🔄 Сменить пароль</button>
+        </div>
+    </div>
+
+    <script type="module" src="/js/profile.js"></script>
+</body>
+</html>

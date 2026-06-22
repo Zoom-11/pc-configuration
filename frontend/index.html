@@ -1,12 +1,129 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Configurator</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PC Configurator – Собери свой ПК</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <meta name="description" content="Веб-конфигуратор для сборки персонального компьютера. Подбор комплектующих, оценка производительности, совместимость и заказ." />
 </head>
 <body>
-    <h1>Веб-конфигуратор ПК</h1>
-    <p>Проект в разработке</p>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">🖥️ PC Configurator</a>
+            <div class="user-info" id="userInfo">
+                <button id="loginBtn">🔑 Войти</button>
+                <!-- Кнопки для гостей и авторизованных -->
+                <button id="wizardBtn" class="primary">Собрать ПК</button>
+                <button id="helpBtn" class="secondary">Помощь в выборе</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Герой-блок с дублирующими кнопками для быстрого доступа -->
+            <section class="hero">
+                <h1>Собери свой идеальный ПК</h1>
+                <p>Выберите комплектующие, получите оценку производительности и закажите готовую сборку</p>
+                <div style="margin-top:1.5rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                    <button id="heroWizardBtn" class="primary" style="font-size:1.2rem; padding:0.75rem 2rem;">🚀 Начать сборку</button>
+                    <button id="heroHelpBtn" class="secondary" style="font-size:1.2rem; padding:0.75rem 2rem;">💡 Помощь</button>
+                </div>
+            </section>
+
+            <!-- Преимущества -->
+            <section class="features" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:2rem; margin:3rem 0; text-align:center;">
+                <div class="feature-item">
+                    <div style="font-size:3rem;">🛠️</div>
+                    <h3>Гибкий конструктор</h3>
+                    <p>Выбирайте комплектующие из обширной базы, добавляйте несколько планок ОЗУ и накопителей.</p>
+                </div>
+                <div class="feature-item">
+                    <div style="font-size:3rem;">⚡</div>
+                    <h3>Мгновенная проверка</h3>
+                    <p>Совместимость компонентов проверяется в реальном времени – никаких конфликтов.</p>
+                </div>
+                <div class="feature-item">
+                    <div style="font-size:3rem;">📊</div>
+                    <h3>Умный рейтинг</h3>
+                    <p>Оценка производительности для игр, работы или офиса с учётом всех деталей.</p>
+                </div>
+                <div class="feature-item">
+                    <div style="font-size:3rem;">🔒</div>
+                    <h3>Личный кабинет</h3>
+                    <p>Сохраняйте сборки, публикуйте их, получайте отзывы и заказывайте.</p>
+                </div>
+            </section>
+
+            <!-- Как это работает -->
+            <section class="how-it-works" style="background:#f8fafc; border-radius:1rem; padding:2rem; margin:2rem 0;">
+                <h2 style="text-align:center; margin-bottom:2rem;">Как это работает</h2>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:2rem;">
+                    <div class="step" style="text-align:center;">
+                        <div style="font-size:2rem; background:#2563eb; color:white; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 0.5rem;">1</div>
+                        <h4>Выберите цель</h4>
+                        <p>Игровой, рабочий или универсальный ПК – определитесь с задачами.</p>
+                    </div>
+                    <div class="step" style="text-align:center;">
+                        <div style="font-size:2rem; background:#2563eb; color:white; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 0.5rem;">2</div>
+                        <h4>Подберите комплектующие</h4>
+                        <p>Добавляйте процессор, видеокарту, память, накопители и другие детали.</p>
+                    </div>
+                    <div class="step" style="text-align:center;">
+                        <div style="font-size:2rem; background:#2563eb; color:white; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 0.5rem;">3</div>
+                        <h4>Оцените и закажите</h4>
+                        <p>Получите рейтинг сборки, опубликуйте её или оформите заказ.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Популярные сборки -->
+            <section class="popular-assemblies">
+                <h2>🔥 Популярные сборки</h2>
+                <div id="popularAssemblies"></div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer style="background:#1e293b; color:#94a3b8; padding:2rem 1rem; margin-top:3rem; text-align:center;">
+        <div class="container">
+            <p>© 2025 PC Configurator. Все права защищены.</p>
+            <p style="font-size:0.9rem; margin-top:0.5rem;">Сделано с ❤️ для энтузиастов ПК</p>
+        </div>
+    </footer>
+
+    <!-- Модальное окно авторизации -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button id="closeAuthModalBtn" class="danger" style="float:right;">✕</button>
+            <h2 id="authTitle">Вход</h2>
+            <input type="email" id="authEmail" placeholder="Email" style="display:none;" />
+            <input type="text" id="authLogin" placeholder="Логин или Email" />
+            <input type="password" id="authPassword" placeholder="Пароль" />
+            <button id="authSubmit">Войти</button>
+            <button id="toggleAuthMode" class="secondary">Нет аккаунта? Зарегистрироваться</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра компонента -->
+    <div id="componentModal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalBtn" class="danger" style="float:right;">✕</button>
+            <h2 id="modalComponentName"></h2>
+            <p id="modalComponentCategory"></p>
+            <img id="modalComponentImage" src="" alt="Компонент" style="max-width:100%; max-height:200px; display:none;" />
+            <div id="modalComponentGallery" style="display:flex; gap:5px; flex-wrap:wrap; margin:10px 0;"></div>
+            <div id="modalComponentSpecs"></div>
+            <p id="modalComponentPrice"></p>
+            <div>
+                <button id="modalPrevBtn">◀</button>
+                <button id="modalNextBtn">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/index.js"></script>
 </body>
 </html>

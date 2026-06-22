@@ -7,5 +7,8 @@
 - Frontend: HTML, CSS, Vanilla JS
 - Парсер комплектующих (aiohttp + BeautifulSoup)
 
-## Запуск (будет дополнено)
-...
+## Запуск 
+
+cd Z:\projects\pc-configuration\backend
+.\venv\Scripts\Activate.ps1
+uvicorn main:app --reload --port 8000

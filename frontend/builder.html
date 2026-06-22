@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Конструктор ПК</title>
+    <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">🖥️ PC Configurator</a>
+            <div class="user-info" id="userInfo">
+                <button id="loginBtn">🔑 Войти</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Фильтры сверху -->
+        <div class="filters">
+            <input type="text" id="searchInput" placeholder="Поиск..." />
+            <select id="manufacturerFilter">
+                <option value="">Все производители</option>
+            </select>
+            <div class="price-filter">
+                <input type="number" id="priceMin" placeholder="Цена от" />
+                <input type="number" id="priceMax" placeholder="Цена до" />
+            </div>
+            <button id="applyFilters">Применить</button>
+            <button id="clearFilters" class="secondary">Сбросить</button>
+        </div>
+
+        <!-- Основной конструктор -->
+        <div class="builder-layout">
+            <!-- Категории (слева) -->
+            <div class="categories">
+                <ul id="categoriesList">
+                    <li data-category="cpu" class="active">🖥️ Процессор</li>
+                    <li data-category="gpu">🎮 Видеокарта</li>
+                    <li data-category="motherboard">🔌 Материнская плата</li>
+                    <li data-category="ram">💾 ОЗУ</li>
+                    <li data-category="storage">💿 Накопитель</li>
+                    <li data-category="psu">⚡ Блок питания</li>
+                    <li data-category="cooler">❄️ Охлаждение</li>
+                    <li data-category="case">🏠 Корпус</li>
+                </ul>
+            </div>
+
+            <!-- Список компонентов (в центре) -->
+            <div class="component-list">
+                <div id="componentList"></div>
+            </div>
+
+            <!-- Правая панель (итоги) -->
+            <div class="summary" id="summaryPanel">
+                <h3>Ваша сборка</h3>
+                <div id="assemblyComponents"></div>
+                <div class="summary-total">
+                    💰 Итого: <span id="totalPrice">0</span> ₽
+                </div>
+                <p id="performanceScore">⭐ Рейтинг: —/100</p>
+                <div id="compatibilityIssues"></div>
+
+                <div class="use-case-selector">
+                    <label for="useCaseSelect">Цель сборки:</label>
+                    <select id="useCaseSelect">
+                        <option value="gaming">🎮 Игры</option>
+                        <option value="workstation">💼 Рабочая станция</option>
+                        <option value="office">🏢 Офис</option>
+                        <option value="universal">🔄 Универсальный</option>
+                    </select>
+                </div>
+
+                <div class="actions">
+                    <button id="saveAssemblyBtn" class="primary">💾 Сохранить</button>
+                    <button id="publishBtn" class="secondary">🚀 Опубликовать</button>
+                    <button id="orderBtn" class="order">🛒 Заказать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра компонента -->
+    <div id="componentModal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalBtn" class="danger" style="float:right;">✕</button>
+            <h2 id="modalComponentName"></h2>
+            <p id="modalComponentCategory"></p>
+            <img id="modalComponentImage" src="" alt="Компонент" style="max-width:100%; max-height:200px; display:none;" />
+            <div id="modalComponentGallery" style="display:flex; gap:5px; flex-wrap:wrap; margin:10px 0;"></div>
+            <div id="modalComponentSpecs"></div>
+            <p id="modalComponentPrice"></p>
+            <div>
+                <button id="modalPrevBtn">◀</button>
+                <button id="modalNextBtn">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно заказа -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <h2>Оформление заказа</h2>
+            <input type="text" id="orderPhone" placeholder="Телефон" />
+            <input type="text" id="orderAddress" placeholder="Адрес доставки" />
+            <textarea id="orderComment" placeholder="Комментарий"></textarea>
+            <button id="submitOrderBtn">Подтвердить заказ</button>
+            <button id="cancelOrderBtn" class="secondary">Отмена</button>
+            <button id="closeOrderModalBtn" class="danger">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно неполной сборки -->
+    <div id="incompleteBuildModal" class="modal">
+        <div class="modal-content">
+            <h3 id="incompleteModalTitle">⚠️ Неполная сборка</h3>
+            <p>Отсутствуют:</p>
+            <ul id="missingComponentsList"></ul>
+            <button id="confirmSaveBtn">Сохранить всё равно</button>
+            <button id="cancelSaveBtn" class="secondary">Отмена</button>
+            <button id="publishCancelBtn" class="secondary" style="display:none;">ОК</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно авторизации -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button id="closeAuthModalBtn" class="danger" style="float:right;">✕</button>
+            <h2 id="authTitle">Вход</h2>
+            <input type="email" id="authEmail" placeholder="Email" style="display:none;" />
+            <input type="text" id="authLogin" placeholder="Логин" />
+            <input type="password" id="authPassword" placeholder="Пароль" />
+            <button id="authSubmit">Войти</button>
+            <button id="toggleAuthMode" class="secondary">Нет аккаунта? Зарегистрироваться</button>
+        </div>
+    </div>
+
+    <script type="module" src="/js/builder.js"></script>
+    <!-- Мастер подбора (Wizard) -->
+    <div id="wizardModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width: 500px; width: 90%;">
+            <button id="closeWizardBtn" class="danger" style="float:right; background:#ef4444; color:white; border:none; border-radius:0.5rem; padding:0.3rem 0.8rem; cursor:pointer;">✕</button>
+            <h3 style="margin-top:0; color:#1e293b;">🖥️ Помощь в выборе</h3>
+            
+            <!-- Шаг 1 -->
+            <div id="wizardStep1">
+                <p style="color:#64748b; margin-bottom:1rem;">Выберите цель использования ПК</p>
+                <select id="wizardUseCase" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:0.5rem; font-size:1rem; margin-bottom:1rem;">
+                    <option value="gaming">🎮 Игры</option>
+                    <option value="workstation">💼 Рабочая станция</option>
+                    <option value="office">🏢 Офис</option>
+                    <option value="universal">🔄 Универсальный</option>
+                </select>
+                <button id="wizardNext1" style="width:100%; padding:0.6rem; background:#2563eb; color:white; border:none; border-radius:0.5rem; font-size:1rem; cursor:pointer;">Далее →</button>
+            </div>
+            
+            <!-- Шаг 2 -->
+            <div id="wizardStep2" style="display:none;">
+                <p style="color:#64748b; margin-bottom:0.5rem;">Введите ваш бюджет</p>
+                <p style="font-size:0.85rem; color:#e67e22; margin-bottom:0.5rem;">💰 Минимальная сумма: <span id="minBudgetValue" style="font-weight:bold;">0</span> ₽</p>
+                <input type="number" id="wizardBudgetInput" placeholder="Введите сумму" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:0.5rem; font-size:1rem; margin-bottom:0.5rem;">
+                <div id="minBudgetWarning" style="display:none; background:#fff3e0; padding:0.5rem; border-radius:0.5rem; margin-bottom:0.5rem; font-size:0.85rem; color:#e67e22;"></div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button id="wizardBack1" style="flex:1; padding:0.6rem; background:#64748b; color:white; border:none; border-radius:0.5rem; font-size:1rem; cursor:pointer;">← Назад</button>
+                    <button id="wizardNext2" style="flex:1; padding:0.6rem; background:#2563eb; color:white; border:none; border-radius:0.5rem; font-size:1rem; cursor:pointer;">Далее →</button>
+                </div>
+            </div>
+            
+            <!-- Шаг 3 -->
+            <div id="wizardStep3" style="display:none;">
+                <p style="color:#64748b; margin-bottom:0.5rem;">Дополнительные предпочтения</p>
+                <div style="display:flex; flex-direction:column; gap:0.5rem; margin-bottom:1rem;">
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                        <input type="checkbox" id="prefPerformance"> Максимальная производительность
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                        <input type="checkbox" id="prefQuiet"> Тихая работа
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                        <input type="checkbox" id="prefCompact"> Компактный корпус
+                    </label>
+                    <label style="display:flex; align-items:center; gap:0.5rem; cursor:pointer;">
+                        <input type="checkbox" id="prefRgb"> Подсветка RGB
+                    </label>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button id="wizardBack2" style="flex:1; padding:0.6rem; background:#64748b; color:white; border:none; border-radius:0.5rem; font-size:1rem; cursor:pointer;">← Назад</button>
+                    <button id="wizardSubmit" style="flex:2; padding:0.6rem; background:#10b981; color:white; border:none; border-radius:0.5rem; font-size:1rem; cursor:pointer;">✅ Подобрать сборку</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

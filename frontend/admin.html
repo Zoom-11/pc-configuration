@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">🖥️ PC Configurator</a>
+            <div class="user-info" id="userInfo">
+                <span>👤 Администратор</span>
+                <button id="logoutBtn">Выйти</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <div class="admin-tabs">
+            <button class="admin-tab-btn active" data-tab="orders">📋 Заказы</button>
+            <button class="admin-tab-btn" data-tab="users">👥 Пользователи</button>
+            <button class="admin-tab-btn" data-tab="components">🔧 Комплектующие</button>
+            <button class="admin-tab-btn" data-tab="statistics">📊 Статистика</button>
+        </div>
+
+        <div id="ordersTab" class="admin-tab-content active">
+            <div class="filters-bar">
+                <input type="text" id="orderSearchInput" placeholder="Поиск по заказам..." />
+                <input type="date" id="orderDateFrom" />
+                <input type="date" id="orderDateTo" />
+                <select id="statusFilter">
+                    <option value="">Все статусы</option>
+                    <option value="pending">⏳ Ожидает</option>
+                    <option value="confirmed">✅ Подтверждён</option>
+                    <option value="shipped">🚚 Отправлен</option>
+                    <option value="delivered">📦 Доставлен</option>
+                    <option value="cancelled">❌ Отменён</option>
+                </select>
+                <button id="applyOrderFiltersBtn">Применить</button>
+                <button id="resetOrderFiltersBtn" class="secondary">Сбросить</button>
+                <button id="refreshOrdersBtn" class="secondary">🔄 Обновить</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Пользователь</th>
+                        <th>Сборка</th>
+                        <th>Сумма</th>
+                        <th>Телефон</th>
+                        <th>Статус</th>
+                        <th>Дата</th>
+                        <th>Состав</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="usersTab" class="admin-tab-content">
+            <div class="filters-bar">
+                <input type="text" id="userSearchInput" placeholder="Поиск по пользователям..." />
+                <select id="userRoleFilter">
+                    <option value="">Все роли</option>
+                    <option value="user">Пользователь</option>
+                    <option value="manager">Менеджер</option>
+                    <option value="admin">Администратор</option>
+                </select>
+                <button id="applyUserFiltersBtn">Применить</button>
+                <button id="resetUserFiltersBtn" class="secondary">Сбросить</button>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Email</th>
+                        <th>Телефон</th>
+                        <th>Роль</th>
+                        <th>Заказов / Сумма</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="componentsTab" class="admin-tab-content">
+            <div class="filters-bar">
+                <input type="text" id="componentSearchInput" placeholder="Поиск..." />
+                <select id="componentCategoryFilter">
+                    <option value="">Все категории</option>
+                    <option value="cpu">Процессор</option>
+                    <option value="gpu">Видеокарта</option>
+                    <option value="motherboard">Материнская плата</option>
+                    <option value="ram">ОЗУ</option>
+                    <option value="storage">Накопитель</option>
+                    <option value="psu">Блок питания</option>
+                    <option value="cooler">Охлаждение</option>
+                    <option value="case">Корпус</option>
+                </select>
+                <select id="componentSortBy">
+                    <option value="price_asc">Цена ↑</option>
+                    <option value="price_desc">Цена ↓</option>
+                    <option value="name_asc">Название А-Я</option>
+                    <option value="name_desc">Название Я-А</option>
+                    <option value="created_desc">Новые</option>
+                </select>
+                <button id="refreshComponentsBtn" class="secondary">🔄 Обновить</button>
+                <button id="addComponentBtn" class="add-component-btn">➕ Добавить компонент</button>
+            </div>
+            <div id="componentsList" class="component-list"></div>
+        </div>
+
+        <div id="statisticsTab" class="admin-tab-content">
+            <div class="filters-bar">
+                <select id="periodSelect">
+                    <option value="week">За неделю</option>
+                    <option value="month">За месяц</option>
+                    <option value="year">За год</option>
+                </select>
+                <button id="refreshStatsBtn" class="secondary">🔄 Обновить</button>
+            </div>
+            <div id="statisticsContent"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно просмотра компонента -->
+    <div id="componentModal" class="modal">
+        <div class="modal-content">
+            <button id="closeModalBtn" class="danger" style="float:right;">✕</button>
+            <h2 id="modalComponentName"></h2>
+            <p id="modalComponentCategory"></p>
+            <img id="modalComponentImage" src="" alt="Компонент" style="max-width:100%; max-height:200px; display:none;" />
+            <div id="modalComponentGallery" style="display:flex; gap:5px; flex-wrap:wrap; margin:10px 0;"></div>
+            <div id="modalComponentSpecs"></div>
+            <p id="modalComponentPrice"></p>
+            <div>
+                <button id="modalPrevBtn">◀</button>
+                <button id="modalNextBtn">▶</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно состава заказа -->
+    <div id="orderComponentsModal" class="modal">
+        <div class="modal-content">
+            <button id="closeOrderComponentsBtn" class="danger" style="float:right;">✕</button>
+            <h3 id="orderComponentsTitle">Состав заказа</h3>
+            <div id="orderComponentsList"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления компонента -->
+    <div id="addComponentModal" class="modal">
+        <div class="modal-content">
+            <h3>➕ Добавить компонент</h3>
+            <select id="compCategory">
+                <option value="cpu">Процессор</option>
+                <option value="gpu">Видеокарта</option>
+                <option value="motherboard">Материнская плата</option>
+                <option value="ram">ОЗУ</option>
+                <option value="storage">Накопитель</option>
+                <option value="psu">Блок питания</option>
+                <option value="cooler">Охлаждение</option>
+                <option value="case">Корпус</option>
+            </select>
+            <input type="text" id="compManufacturer" placeholder="Производитель *" />
+            <input type="text" id="compModelName" placeholder="Модель *" />
+            <input type="number" id="compPrice" placeholder="Цена *" />
+            <input type="text" id="compImageUrl" placeholder="Основное фото (URL)" />
+            <input type="text" id="compImages" placeholder="Дополнительные фото (URL через запятую или JSON)" />
+            <textarea id="compSpecs" placeholder="Дополнительные характеристики (JSON)"></textarea>
+            <div id="specsFields"></div>
+            <button id="submitComponentBtn">✅ Добавить</button>
+            <button id="cancelComponentBtn" class="secondary">Отмена</button>
+            <button id="closeComponentModal" class="danger">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно редактирования компонента -->
+    <div id="editComponentModal" class="modal">
+        <div class="modal-content">
+            <h3>✏️ Редактировать компонент</h3>
+            <div id="editComponentContent"></div>
+            <button id="saveEditComponentBtn">✅ Сохранить</button>
+            <button id="cancelEditComponentBtn" class="secondary">Отмена</button>
+            <button id="closeEditComponentModal" class="danger">Закрыть</button>
+        </div>
+    </div>
+
+    <script type="module" src="/js/admin.js"></script>
+</body>
+</html>
